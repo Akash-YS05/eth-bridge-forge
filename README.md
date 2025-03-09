@@ -1,3 +1,5 @@
+initialising local eth dev space with foundry and writing tests with forge
+
 # <h1 align="center"> Forge Template </h1>
 
 **Template repository for getting started quickly with Foundry projects**
