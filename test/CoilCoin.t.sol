@@ -37,6 +37,8 @@ contract TestContract is Test {
     function testSimple() public {
         assertEq(uint(2), uint(2), "ok");
     }
+
+    //test minting the token to an address
     function testMint() public {
         c.mint(address(this), 100);
         assertEq(c.balanceOf(address(this)), 100, "ok");
@@ -44,5 +46,19 @@ contract TestContract is Test {
 
         c.mint(0x1535784469C951F4d4F85B582E6646421618cb7A, 100);
         assertEq(c.balanceOf(0x1535784469C951F4d4F85B582E6646421618cb7A), 100, "ok");
+    }
+
+    //test transfering tokens to an address by asserting the change in balance
+    function testTransfer() public {
+        c.mint(address(this), 100);
+        c.transfer(0x1535784469C951F4d4F85B582E6646421618cb7A, 50);
+
+        assertEq(c.balanceOf(address(this)), 50, "ok");
+        assertEq(c.balanceOf(0x1535784469C951F4d4F85B582E6646421618cb7A), 50, "ok");
+
+        //change the address of the one who is calling the contract
+        vm.prank(0x1535784469C951F4d4F85B582E6646421618cb7A);
+        c.transfer(address(this), 50);
+        assertEq(c.balanceOf(address(this)), 100, "ok");
     }
 }
