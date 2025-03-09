@@ -61,4 +61,18 @@ contract TestContract is Test {
         c.transfer(address(this), 50);
         assertEq(c.balanceOf(address(this)), 100, "ok");
     }
+
+    function testApprovals() public {
+        c.mint(address(this), 100);
+
+        //the address can only spend 10 tokens
+        c.approve(0x1535784469C951F4d4F85B582E6646421618cb7A, 10);
+
+        vm.prank(0x1535784469C951F4d4F85B582E6646421618cb7A);
+        c.transferFrom(address(this), 0x1535784469C951F4d4F85B582E6646421618cb7A, 5);
+
+        assertEq(c.balanceOf(address(this)), 95, "ok");
+        assertEq(c.balanceOf(0x1535784469C951F4d4F85B582E6646421618cb7A), 5, "ok");
+        assertEq(c.allowance(address(this), 0x1535784469C951F4d4F85B582E6646421618cb7A), 5, "ok");
+    }
 }
